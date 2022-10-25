@@ -58,6 +58,7 @@ window.addEventListener("load", async () => {
   await returnAllWhitelistedAddressses()
   await returnContractBal()
   await returnTotalNo()
+  await returnDeployerAddress();
   notificationOff()
 });
 
@@ -121,6 +122,19 @@ const returnTotalNo = async () => {
   }
 };
 
+
+//it returns the total number that can be whitelisted
+const returnDeployerAddress = async () => {
+  try {
+    const result = await contract.methods
+    .owner().call()
+    document.querySelector("#deployerAddress").textContent = result
+     return result
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 /**************************************************************/
 
 /******************Write Function******************* */
@@ -178,4 +192,5 @@ document
         return;
       }
       notification(`🎉 Token increase successfully.`)
+      await returnTotalNo();
     }) 
