@@ -57,7 +57,7 @@ contract whitelistedMinting{
     event newMaxOfAddresses(uint indexed maximumWhitelistedAddresses);
 
 
-    /// function to whitelist address
+    ///@dev A function to whitelist address
     function whitelistAddress() public {
     require(!whitelistedAddresses[msg.sender], "Address already whitelisted");
     require(numAddressesWhitelisted < maximumWhitelistedAddresses, "maximum address to be whitelisted reached");
