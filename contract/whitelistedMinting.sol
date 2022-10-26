@@ -1,37 +1,46 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+/// @title Auction contract 
+/// @author Adewale Iyanuoluwa Isaac
+// Note this is for alfajores testnet 
+
 //import {IERC20} from "./IERC20.sol";
+
+/// @dev This is an ERC20 interface (this would help us interact with celo token)
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract whitelistedMinting{
-    //address of the deployer
+    /// address of the deployer
     address public owner;
 
-    //set the total number of whitelist addressses allowed
+    /// set the total number of whitelist addressses allowed
     uint8 public maximumWhitelistedAddresses;
 
     address celoAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
-    //gives the current number of addresse whitelisted
+    /// gives the current number of addresse whitelisted
     uint8 public numAddressesWhitelisted;
 
-    //tracking addresses if whitelisted or not
+    /// tracking addresses if whitelisted or not
     mapping(address => bool) public whitelistedAddresses;
 
-    //track if an address ahs already minted or not
+    /// track if an address ahs already minted or not
     mapping(address => bool) public minted;
 
-    //all whitelistedAddres
+    /// all whitelistedAddres
     address[] whitelistedAddress;
 
+    /// constructor
+    ///@dev this sets the total number of address allowed to mint upon deployment
+    ///@dev is sets the owner of the contract to msg.sender
     constructor(uint8 _maximumWhitelistedAddresses) {
         maximumWhitelistedAddresses =  _maximumWhitelistedAddresses;
         owner = msg.sender;
       }
     
-    /*******************Modifier***********************/
 
+    /// Modifier
     modifier alreadyMinted(){
         require(minted[msg.sender] == false, "already mineted");
         _;
@@ -41,14 +50,14 @@ contract whitelistedMinting{
         _;
     }
     
-    //Event
+    /// Event
     event addressWhitelisted(address indexed whitelistaddress, uint indexed numAddressesWhitelisted);
     event mintedSuccefully(address indexed minter, uint indexed amount, uint timeOfminting);
     event balance(uint indexed celoBalance, uint indexed cUSDBalance);
     event newMaxOfAddresses(uint indexed maximumWhitelistedAddresses);
 
 
-    //function to whitelist address
+    /// function to whitelist address
     function whitelistAddress() public {
     require(!whitelistedAddresses[msg.sender], "Address already whitelisted");
     require(numAddressesWhitelisted < maximumWhitelistedAddresses, "maximum address to be whitelisted reached");
@@ -61,13 +70,8 @@ contract whitelistedMinting{
     emit addressWhitelisted(msg.sender, numAddressesWhitelisted);
     }
 
-    //this isn't gas efficient. suitable for limited address
-    function allWhitelistedAddress() public view returns(address[] memory){
 
-        return whitelistedAddress;
-    }
-
-    //function to mint both CELO and cUSD
+    ///@dev A function to mint both CELO and cUSD
     function mint() external alreadyMinted{
         require(whitelistedAddresses[msg.sender] == true, "not whitelisted");
         IERC20(celoAddress).transfer(msg.sender, 1e18);
@@ -77,7 +81,13 @@ contract whitelistedMinting{
         emit mintedSuccefully(msg.sender, 1e18, block.timestamp);
     }
 
-    //function to return the balance of the contract
+
+    ///@dev A function to return all whitelisted address
+    function allWhitelistedAddress() public view returns(address[] memory){
+        return whitelistedAddress;
+    }
+
+    ///@dev A function to return the balance of the contract
     function contractBal() public view returns(uint, uint){
         uint celoBalance = IERC20(celoAddress).balanceOf(address(this));
         uint cUSDBalance = address(this).balance;
@@ -87,7 +97,7 @@ contract whitelistedMinting{
 
     }
 
-    //increase the maximum number of address whitelisted
+    ///@dev A function to increase the maximum number of address whitelisted
     function increaseMaxwhitelistedAddress(uint8 Num) external onlyOwner{
         maximumWhitelistedAddresses += Num;
 
