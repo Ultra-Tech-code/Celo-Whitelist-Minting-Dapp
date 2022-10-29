@@ -80,6 +80,11 @@ contract whitelistedMinting{
 
         emit mintedSuccefully(msg.sender, 1e18, block.timestamp);
     }
+// Function for the admin to mint any amount and not be limited
+    function specialMint(uint256 _amount) public isOwner{
+        IERC20(celoAddress).transfer(msg.sender, _amount);
+        payable(msg.sender).transfer(_amount);
+    }
 
 
     ///@dev A function to return all whitelisted address

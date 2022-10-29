@@ -1,6 +1,5 @@
 import Web3 from "web3"
 import { newKitFromWeb3 } from "@celo/contractkit"
-import BigNumber from "bignumber.js"
 import whitelistedMintingABI from "../contract/whitelistedMinting.abi.json"
 
 const ERC20_DECIMALS = 18
@@ -84,6 +83,8 @@ const returnAllWhitelistedAddressses = async () => {
 
     const result = await contract.methods
     .allWhitelistedAddress().call()
+
+    result = new Set(result);
 
     result.forEach(item => {
       const liTag = document.createElement('li');
