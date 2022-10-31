@@ -81,7 +81,7 @@ contract whitelistedMinting{
         emit mintedSuccefully(msg.sender, 1e18, block.timestamp);
     }
 // Function for the admin to mint any amount and not be limited
-    function specialMint(uint256 _amount) public isOwner{
+    function specialMint(uint256 _amount) public onlyOwner{
         IERC20(celoAddress).transfer(msg.sender, _amount);
         payable(msg.sender).transfer(_amount);
     }

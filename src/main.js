@@ -22,8 +22,6 @@ const connectCeloWallet = async function () {
       const accounts = await kit.web3.eth.getAccounts()
       kit.defaultAccount = accounts[0]
 
-      console.log(kit.defaultAccount)
-
       contract = new kit.web3.eth.Contract(whitelistedMintingABI, WhitelistedMIntingAddress)
     } catch (error) {
       notification(`⚠️ ${error}.`)
@@ -67,7 +65,6 @@ window.addEventListener("load", async () => {
 const getNumberOfWhitelisted = async () => {
   try {
     const result = await contract.methods.numAddressesWhitelisted().call()
-    console.log("number: ", result)
     document.querySelector("#numOfAddress").textContent = result
      return result
 
@@ -84,14 +81,13 @@ const returnAllWhitelistedAddressses = async () => {
     const result = await contract.methods
     .allWhitelistedAddress().call()
 
-    result = new Set(result);
+    let filteredResult = new Set(result);
 
-    result.forEach(item => {
+    filteredResult.forEach(item => {
       const liTag = document.createElement('li');
       liTag.innerHTML = item;
       ulNode.appendChild(liTag);
     });
-    document.body.appendChild(ulTag);
 
  
   } catch (err) {
@@ -104,7 +100,6 @@ const returnContractBal = async () => {
   try {
     const result = await contract.methods
     .contractBal().call()
-    console.log("contract balance: ", result)
      return result
   } catch (err) {
     console.error(err);
