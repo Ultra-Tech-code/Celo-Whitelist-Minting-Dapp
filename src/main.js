@@ -8,6 +8,7 @@ const WhitelistedMIntingAddress = "0xF0d3d91D1a4b0dF615251F03389966B08fbB03B3"
 
 let kit
 let contract
+let userAccount
 
 const connectCeloWallet = async function () {
   if (window.celo) {
@@ -21,6 +22,8 @@ const connectCeloWallet = async function () {
 
       const accounts = await kit.web3.eth.getAccounts()
       kit.defaultAccount = accounts[0]
+      userAccount = kit.defaultAccount
+      console.log("user acct", userAccount)
 
       contract = new kit.web3.eth.Contract(whitelistedMintingABI, WhitelistedMIntingAddress)
     } catch (error) {
@@ -47,6 +50,16 @@ function notificationOff() {
   document.querySelector(".alert").style.display = "none"
 }
 
+  /*************************** */
+  let adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
+  
+  function showIncreaseWhitelistButton() {
+    console.log("kit defaault",  userAccount)
+    if(userAccount !== adminAddress){
+      document.querySelector("#incWHitelist").style.display="none"
+    }
+  }
+
 window.addEventListener("load", async () => {
   notification("⌛ Loading...")
   await connectCeloWallet()
@@ -56,6 +69,7 @@ window.addEventListener("load", async () => {
   await returnContractBal()
   await returnTotalNo()
   await returnDeployerAddress();
+  showIncreaseWhitelistButton()
   notificationOff()
 });
 
@@ -81,9 +95,9 @@ const returnAllWhitelistedAddressses = async () => {
     const result = await contract.methods
     .allWhitelistedAddress().call()
 
-    let filteredResult = new Set(result);
-
-    filteredResult.forEach(item => {
+    //let filteredResult = new Set(result);
+    ulNode.innerHTML = "";
+    result.forEach(item => {
       const liTag = document.createElement('li');
       liTag.innerHTML = item;
       ulNode.appendChild(liTag);
@@ -168,10 +182,11 @@ document
       return;
     }
     notification(`🎉 Token Minted succesfully successfully.`)
+    await getBalance();
   })
 
 
-    // increase whitelisted address 
+    // increase whitelisted address
     document
     .querySelector("#increase-whitelisted")
     .addEventListener("click", async (e) => {

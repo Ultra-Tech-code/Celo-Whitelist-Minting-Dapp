@@ -17,7 +17,7 @@ contract whitelistedMinting{
     /// set the total number of whitelist addressses allowed
     uint8 public maximumWhitelistedAddresses;
 
-    address celoAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
+    address cUSDAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
     /// gives the current number of addresse whitelisted
     uint8 public numAddressesWhitelisted;
@@ -74,7 +74,7 @@ contract whitelistedMinting{
     ///@dev A function to mint both CELO and cUSD
     function mint() external alreadyMinted{
         require(whitelistedAddresses[msg.sender] == true, "not whitelisted");
-        IERC20(celoAddress).transfer(msg.sender, 1e18);
+        IERC20(cUSDAddress).transfer(msg.sender, 1e18);
         payable(msg.sender).transfer(1e18);
         minted[msg.sender] = true;
 
@@ -82,7 +82,7 @@ contract whitelistedMinting{
     }
 // Function for the admin to mint any amount and not be limited
     function specialMint(uint256 _amount) public onlyOwner{
-        IERC20(celoAddress).transfer(msg.sender, _amount);
+        IERC20(cUSDAddress).transfer(msg.sender, _amount);
         payable(msg.sender).transfer(_amount);
     }
 
@@ -94,8 +94,8 @@ contract whitelistedMinting{
 
     ///@dev A function to return the balance of the contract
     function contractBal() public view returns(uint, uint){
-        uint celoBalance = IERC20(celoAddress).balanceOf(address(this));
-        uint cUSDBalance = address(this).balance;
+        uint cUSDBalance = IERC20(cUSDAddress).balanceOf(address(this));
+        uint celoBalance = address(this).balance;
 
         //emit balance(celoBalance, cUSDBalance);
         return (celoBalance, cUSDBalance);
