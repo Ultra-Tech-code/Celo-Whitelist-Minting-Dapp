@@ -51,18 +51,18 @@ function notificationOff() {
 }
 
   /*************************** */
-  let adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
+  // let adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
   
-  function showIncreaseWhitelistButton() {
-    console.log("kit defaault",  userAccount)
-    if(userAccount !== adminAddress){
-      document.querySelector("#incWHitelist").style.display="none"
-    }
-  }
+  // function showIncreaseWhitelistButton() {
+  //   console.log("kit defaault",  userAccount)
+  //   if(userAccount !== adminAddress){
+  //     document.querySelector("#incWHitelist").style.display="none"
+  //   }
+  // }
 
   /******************************************* */
 
-  adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
+  let adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
   
   function showAdminButton() {
     if(userAccount == adminAddress){
@@ -83,7 +83,7 @@ function AdminButton() {
   </div>
 
   <!-- button for specialMInt -->
-  <div class="mb-4" style="margin: 2rem">
+  <div>
   <a class="btn my-header rounded-pill txt-color" id="incWHitelist" data-bs-toggle="modal"
   data-bs-target="#newaddModal">
   Special Mint
