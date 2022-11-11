@@ -18,18 +18,21 @@
       --bs-font-sans-serif: "DM Sans", sans-serif;
     }
 
-    body{
+    body {
       font-family: monospace;
       background-color: #030A2B;
       color: #697278;
     }
-    .my-header{
+
+    .my-header {
       background-color: #216781;
     }
-    .txt-color{
+
+    .txt-color {
       color: aliceblue;
     }
-    #red-heart{
+
+    #red-heart {
       color: brown;
     }
 
@@ -55,7 +58,7 @@
   <div class="container mt-2" style="max-width: 72em">
     <nav class="navbar navbar-light my-header">
       <div class="container-fluid">
-        <span class="navbar-brand m-0 h4 fw-bold" >CELO Whitelisted Minting</span>
+        <span class="navbar-brand m-0 h4 fw-bold">CELO Whitelisted Minting</span>
         <span class="nav-link border rounded-pill" style="background-color: #030A2B;">
           <span id="balance">0</span>
           cUSD
@@ -70,53 +73,69 @@
 
     <div class="d-flex justify-content-evenly mt-4">
       <div>
-      <h1>Welcome to Celo whitelisting website.</h1>
-      <p>Get whitelisted and mint your token. it's as easy as that</p>
-      <div class="d-flex justify-content-center">  
-        <!-- Button to be Whitelisted -->
-        <div class="mb-4" style="margin-top: 2em" id="join-whitelist">
-          <a class="btn my-header rounded-pill txt-color">
-            join whitelist
-          </a>
-        </div>
+        <h1>Welcome to Celo whitelisting website.</h1>
+        <p>Get whitelisted and mint your token. it's as easy as that</p>
+        <div class="d-flex justify-content-center">
+          <!-- Button to be Whitelisted -->
+          <div class="mb-4" style="margin-top: 2em" id="join-whitelist">
+            <a class="btn my-header rounded-pill txt-color">
+              join whitelist
+            </a>
+          </div>
 
-        <!-- button to mint -->
-        <div class="mb-4" style="margin: 2rem" id="mint-token">
-          <a class="btn my-header rounded-pill txt-color">
-            Mint
-          </a>
+          <!-- button to mint -->
+          <div class="mb-4" style="margin: 2rem" id="mint-token">
+            <a class="btn my-header rounded-pill txt-color">
+              Mint
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
 
       <div>
-          <div class="fw-bold display-6">
-            <span id="numOfAddress">0</span> addresses has already whitelisted
-          </div>
-          <div id="arrayOfAddr" class="mt-3">
-            <ul id='addresses'></ul>
-          </div>
+        <div class="fw-bold display-6">
+          <span id="numOfAddress">0</span> addresses has already whitelisted
+        </div>
+        <div id="arrayOfAddr" class="mt-3">
+          <ul id='addresses'></ul>
+        </div>
       </div>
 
     </div>
 
     <div class="mb-4" style="margin-top: 4em">
-      <p class="fw-bold">Only <span id="totalNo"> </span> Addresses to be whitelisted</p> 
+      <p class="fw-bold">Only <span id="totalNo"> </span> Addresses to be whitelisted</p>
     </div>
-    <!-- button to increase number of whitelisted -->
-    <div>
-      <a class="btn my-header rounded-pill txt-color" id="incWHitelist" data-bs-toggle="modal" data-bs-target="#addModal">
-        Increase whitelisted address
-      </a>
+
+    <div id="admin-container">
+      <!-- <div class="d-flex justify-content-center"> -->
+        <!-- button to increase number of whitelisted -->
+        <!-- <div>
+          <a class="btn my-header rounded-pill txt-color" id="incWHitelist" data-bs-toggle="modal"
+            data-bs-target="#addModal">
+            Increase whitelisted address
+          </a>
+        </div> -->
+
+        <!-- button for specialMInt -->
+        <!-- <div class="mb-4" style="margin: 2rem" id="special-mint"> -->
+          <!-- <a class="btn my-header rounded-pill txt-color">
+        Special Mint
+      </a> -->
+        <!-- </div> -->
+      <!-- </div> -->
     </div>
-    
+
+
+
     <footer class="mt-4">
-     <p class="text-center mb-0 pb-0">made with <i class="bi bi-heart-fill" id="red-heart"></i> by <a href="http://www.github.com/ultra-tech-code">BlackAdam</a></p>
-     <p id="deployerAddress" class="text-center mt-0 pt-0"></p>
+      <p class="text-center mb-0 pb-0">made with <i class="bi bi-heart-fill" id="red-heart"></i> by <a
+          href="http://www.github.com/ultra-tech-code">BlackAdam</a></p>
+      <p id="deployerAddress" class="text-center mt-0 pt-0"></p>
     </footer>
 
-    <!--Modal-->
+    <!--Modal for Increase allowance-->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="newProductModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -129,7 +148,7 @@
               <div class="form-row">
                 <div class="col">
                   <input type="text" type="number" id="NewNumber" class="form-control mb-2"
-                    placeholder="increase the whielisted address capacity" />
+                    placeholder="increase the whielisted address Number" />
                 </div>
               </div>
             </form>
@@ -139,6 +158,37 @@
               Close
             </button>
             <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="increase-whitelisted">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/Modal-->
+
+     <!--Modal for Special Mint-->
+     <div class="modal fade" id="newaddModal" tabindex="-1" aria-labelledby="newProductModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newProductModalLabel">Special Mint</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-row">
+                <div class="col">
+                  <input type="text" type="number" id="amount-input" class="form-control mb-2"
+                    placeholder="Input amount to Mint" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="special-mint">
               Send
             </button>
           </div>

@@ -60,6 +60,39 @@ function notificationOff() {
     }
   }
 
+  /******************************************* */
+
+  adminAddress = "0x5E89De9a9b8394AEca6b2FeC399B32228a11B03B";
+  
+  function showAdminButton() {
+    if(userAccount == adminAddress){
+      let admin_div = document.querySelector("#admin-container")
+      const template = AdminButton();
+      admin_div.innerHTML = template;
+    }
+  }
+
+function AdminButton() {
+  return `<div class="d-flex justify-content-center">
+  <!-- button to increase number of whitelisted -->
+  <div>
+    <a class="btn my-header rounded-pill txt-color" id="incWHitelist" data-bs-toggle="modal"
+      data-bs-target="#addModal">
+      Increase whitelisted address
+    </a>
+  </div>
+
+  <!-- button for specialMInt -->
+  <div class="mb-4" style="margin: 2rem">
+  <a class="btn my-header rounded-pill txt-color" id="incWHitelist" data-bs-toggle="modal"
+  data-bs-target="#newaddModal">
+  Special Mint
+</a>
+  </div>
+</div>`;
+}
+
+
 window.addEventListener("load", async () => {
   notification("⌛ Loading...")
   await connectCeloWallet()
@@ -69,7 +102,8 @@ window.addEventListener("load", async () => {
   await returnContractBal()
   await returnTotalNo()
   await returnDeployerAddress();
-  showIncreaseWhitelistButton()
+  showAdminButton()
+  //showIncreaseWhitelistButton()
   notificationOff()
 });
 
@@ -190,18 +224,38 @@ document
     document
     .querySelector("#increase-whitelisted")
     .addEventListener("click", async (e) => {
-      notification(`⌛ ${kit.defaultAccount} minting token...`)
+      //document.querySelector("#modal-tag").textContent = "Increase Allowance";
       const input = document.getElementById("NewNumber").value
-      console.log(input);
+      notification(`⌛ ${kit.defaultAccount} addresses allowed to mint increased by ${input}...`)
+      
       try {
         const result = await contract.methods
         .increaseMaxwhitelistedAddress(input)
         .send({ from: kit.defaultAccount })
         console.log(result)
       } catch (error) {
-        notification(`⚠️ ${error} not the deployer`)
+        notification(`⚠️ ${error} not the Admin`)
         return;
       }
-      notification(`🎉 Token increase successfully.`)
+      notification(`🎉 Addresses increased successfully.`)
       await returnTotalNo();
     }) 
+    
+
+  // Special Mint Function
+  document
+  .querySelector("#special-mint")
+  .addEventListener("click", async (e) => {
+    const input = document.getElementById("amount-input").value
+    notification(`⌛ ${kit.defaultAccount} special minting of ${input} tokens...`)
+    try {
+      const result = await contract.methods
+      .specialMint(input)
+      .send({ from: kit.defaultAccount })
+    } catch (error) {
+      notification(`⚠️ ${error} Not the Admin/insufficient balance`)
+      return;
+    }
+    notification(`🎉 Token Minted succesfully.`)
+    await getBalance();
+  })
